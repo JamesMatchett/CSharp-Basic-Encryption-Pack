@@ -327,14 +327,12 @@ namespace EncryptionHeckingCode
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadFromFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToFileToolStripMenuItem;
-        private System.Windows.Forms.RichTextBox plaintextTextbox;
         private System.Windows.Forms.Label plaintextTextboxLabel;
         private System.Windows.Forms.TextBox encryptionKeyTextbox;
         private System.Windows.Forms.Label encryptionKeyLabel;
         private System.Windows.Forms.Button EncryptButton;
         private System.Windows.Forms.CheckBox RandomKeyCheckBox;
         private System.Windows.Forms.Label ciphertextLabel;
-        private System.Windows.Forms.RichTextBox ciphertextTextbox;
         private RadioButton encryptRadioButton;
         private RadioButton decryptRadioButton;
         private ToolStripMenuItem editToolStripMenuItem;
@@ -346,6 +344,8 @@ namespace EncryptionHeckingCode
         private ToolStripMenuItem plaintextToolStripMenuItem1;
         private ToolStripMenuItem ciphertextToolStripMenuItem1;
         private ToolStripMenuItem encryptionKeyToolStripMenuItem1;
+        public RichTextBox plaintextTextbox;
+        public RichTextBox ciphertextTextbox;
     }
 }
 

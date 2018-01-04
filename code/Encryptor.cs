@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,20 +8,11 @@ using System.Windows.Forms;
 
 namespace EncryptionHeckingCode
 {
-    public class Encryptor
+    public class Encryptor : EventArgs
     {
         public bool complete = false;
         public string Result = null;
-
-        public virtual string Encrypt()
-        {
-            return "";
-        }
-
-        public virtual string Decrypt()
-        {
-            return "";
-        }
+        public BackgroundWorker bw;
 
         public virtual void Output(ref RichTextBox t)
         {
@@ -29,10 +21,16 @@ namespace EncryptionHeckingCode
             this.Stop();
         }
 
+        public virtual bool ValidateKey()
+        {
+            return true;
+        }
+
         public virtual void Start(bool Encrypt)
         {
 
         }
+
 
         public virtual void Stop()
         {
@@ -48,17 +46,17 @@ namespace EncryptionHeckingCode
             
 
            internal readonly string keyContent;
-           internal readonly int length;
+           internal readonly int Keylength;
 
             /// <summary>
             /// Randomly generated key
             /// </summary>
-            /// <param name="length">desired length of the key</param>
+            /// <param name="Inputlength">desired length of the key</param>
             /// <param name="alphanumeric">whether the key is alphanumeric (true) or not (false)</param>
-           public  Key(int length, bool alphanumeric)
+           public  Key(int Inputlength, bool alphanumeric)
             {
-               keyContent = Generate(length, alphanumeric);
-                length = keyContent.Length;
+                keyContent = Generate(Inputlength, alphanumeric);
+                Keylength = keyContent.Length;
             }
             
             /// <summary>
@@ -68,7 +66,7 @@ namespace EncryptionHeckingCode
            public  Key(string input)
             {
                 keyContent = input;
-                length = keyContent.Length;
+                Keylength = keyContent.Length;
             }
 
             //keeping this static because if we want to generate a new key we may as well generate a completely new object to ensure

@@ -9,9 +9,11 @@ namespace EncryptionHeckingCode
 {
     class AES : Encryptor
     {
-        private BackgroundWorker bw;
-        private Key key;            
+        
+        private Key key;
+        
 
+       
        public AES()
         {
             //called if random checkbox is ticked meaning  we genertae a key 
@@ -22,8 +24,24 @@ namespace EncryptionHeckingCode
         public AES(string input)
         {
             //called if the user wants to input a string to be their key
+
             key = new Key(input);
         }
+
+
+        public override bool ValidateKey()
+        {
+            if (key.Keylength >= 128 && (key.Keylength % 32) == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        
 
         public override void Start(bool Enc)
         {
@@ -38,6 +56,9 @@ namespace EncryptionHeckingCode
             }
             this.bw.RunWorkerAsync();
             this.bw.WorkerSupportsCancellation = true;
+            this.bw.WorkerReportsProgress = true;
+            bw.ProgressChanged += new ProgressChangedEventHandler(EncryptionMainForm.Output);
+            
         }
 
         public override void Stop()
@@ -47,12 +68,17 @@ namespace EncryptionHeckingCode
 
         private void Encrypt(object sender, EventArgs e)
         {
+            int PerCentComplete = 100;
            
+
+            this.bw.ReportProgress(PerCentComplete);
         }
 
         private void Decrypt(object sender, EventArgs e)
         {
 
         }
+
+       
     }
 }

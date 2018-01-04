@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -13,16 +14,19 @@ namespace EncryptionHeckingCode
         }
 
         private List<Encryptor> arr = new List<Encryptor>();
+        public event EventHandler EncryptionComplete;
 
 
         public enum EncryptionType
         {
+            None,
             AES,
             RSA,
             TripleDES,
             Blowfish,
             Twofish
         }
+
 
         private void hideEncryptionKeyCheckbox_CheckedChanged(object sender, EventArgs e)
         {
@@ -43,83 +47,80 @@ namespace EncryptionHeckingCode
             }
             else
             {
+                
                 Encryptor E = null;
 
-
+                EncryptionType Type = EncryptionType.None;
+                Type = (EncryptionType) Enum.Parse(typeof(EncryptionType), encryptionMethodComboBox.Text, true);
 
                 //AES
-                if (encryptionMethodComboBox.SelectedIndex == 0)
+                if (Type == EncryptionType.AES)
                 {
                     if (RandomKeyCheckBox.Checked)
                     {
                         //start with random generated key
                         E = new AES();
-                        MessageBox.Show("Made E 2");
                     }
                     else
                     {
                         //start with user input key
-                        if (encryptionKeyTextbox.Text.Length >= 128 && (encryptionKeyTextbox.Text.Length % 32) == 0)
-                        {
-                            E = new AES(encryptionKeyTextbox.Text);
-                            MessageBox.Show("Made E");
-
-                        }
-                        else
-                        {
-                            MessageBox.Show("Key length must be greater than 128 and a multiple of 32");
-
-                        }
-
-
+                        E = new AES(encryptionKeyTextbox.Text);
+                        //check that the new key is accepted by AES
                     }
-                    //if encrypt radio ticked to determine if encryption or decryption
-                    //E.Start(encryptRadioButton.Checked);
-                    if (E != null)
+                    if (!E.ValidateKey())
                     {
-                        E.Start(encryptRadioButton.Checked);
-                        EncryptButton.Text = "Stop";
-                        arr.Add(E);
-
-                        while (!E.complete)
-                        {
-
-                            //wait for the asynchronous process to finish, signalled by E.complete being set;
-                        }
-
-                        //when e.complete = true
-                        E.Output(ref ciphertextTextbox);
+                        MessageBox.Show("Key length must be greater than 128 and a multiple of 32");
+                        E = null;
                     }
-
-
 
 
                 }
+
                 //RSA
-                if (encryptionMethodComboBox.SelectedIndex == 1)
+                if (Type == EncryptionType.RSA)
                 {
                     MessageBox.Show("Being developed soon!");
                 }
                 //TripleDes
-                if (encryptionMethodComboBox.SelectedIndex == 2)
+                if (Type == EncryptionType.TripleDES)
                 {
                     MessageBox.Show("Being developed soon!");
                 }
                 //Blowfish
-                if (encryptionMethodComboBox.SelectedIndex == 3)
+                if (Type == EncryptionType.Blowfish)
                 {
                     MessageBox.Show("Being developed soon!");
                 }
                 //TwoFish
-                if (encryptionMethodComboBox.SelectedIndex == 4)
+                if (Type == EncryptionType.Twofish)
                 {
                     MessageBox.Show("Being developed soon!");
+                }
+
+
+                if (E != null)
+                {
+                    E.Start(encryptRadioButton.Checked);
+                    EncryptButton.Text = "Stop";
+                    arr.Add(E);
+                   
+                   
+                    //when e.complete = true
+                    E.Output(ref ciphertextTextbox);
                 }
 
             }
 
         }
-        
+
+        internal static void Output(object sender, ProgressChangedEventArgs e)
+        {
+            //update progress bar
+            MessageBox.Show("Im in the method");
+        }
+
+       
+       
         private void CheckToEnableEncryptButton(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(plaintextTextbox.Text) &&

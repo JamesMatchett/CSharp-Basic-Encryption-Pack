@@ -104,7 +104,7 @@ namespace EncryptionHeckingCode
                     EncryptButton.Text = "Stop";
                     arr.Add(E);
                    
-                   
+                    
                     //when e.complete = true
                     E.Output(ref ciphertextTextbox);
                 }
@@ -116,7 +116,7 @@ namespace EncryptionHeckingCode
         internal static void Output(object sender, ProgressChangedEventArgs e)
         {
             //update progress bar
-            MessageBox.Show("Im in the method");
+            
         }
 
        

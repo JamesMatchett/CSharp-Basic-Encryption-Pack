@@ -26,11 +26,34 @@ namespace EncryptionHeckingCode
             return true;
         }
 
-        public virtual void Start(bool Encrypt)
+        public virtual void Start(bool Enc)
         {
-
+            this.bw = new BackgroundWorker();
+            if (Enc)
+            {
+                this.bw.DoWork += Encrypt;
+            }
+            else
+            {
+                this.bw.DoWork += Decrypt;
+            }
+            this.bw.RunWorkerAsync();
+            this.bw.WorkerSupportsCancellation = true;
+            this.bw.WorkerReportsProgress = true;
+            bw.ProgressChanged += new ProgressChangedEventHandler(EncryptionMainForm.Output);
         }
 
+        protected virtual void Encrypt(object sender, EventArgs e)
+        {
+            MessageBox.Show("Encrypt method not overridden!");
+            throw new NotImplementedException();
+        }
+
+        protected virtual void Decrypt(object sender, EventArgs e)
+        {
+            MessageBox.Show("Decrypt method not overridden!");
+            throw new NotImplementedException();
+        }
 
         public virtual void Stop()
         {

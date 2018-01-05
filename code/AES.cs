@@ -66,15 +66,14 @@ namespace EncryptionHeckingCode
             this.bw.CancelAsync();
         }
 
-        private void Encrypt(object sender, EventArgs e)
+        protected override void Encrypt(object sender, EventArgs e)
         {
             int PerCentComplete = 100;
-           
-
             this.bw.ReportProgress(PerCentComplete);
+            
         }
 
-        private void Decrypt(object sender, EventArgs e)
+        protected override void Decrypt(object sender, EventArgs e)
         {
 
         }
